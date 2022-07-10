@@ -1,0 +1,97 @@
+section div {
+    height: 45px;
+    width: 45px;
+}
+
+$red01: red;
+$green02: green;
+$border1px: conversion(1px);
+$blue03: blue;
+$padding: conversion(15px);
+%title {
+    color: $green02;
+}
+
+@function conversion($valoreCheCambia, $pixel: 16px) {
+    $remReturn: $valoreCheCambia / $pixel;
+    @return $remReturn+rem;
+}
+
+@mixin article ($color, $border-color, $font-size) {
+    color: $color;
+    border: conversion(1px) solid;
+    border-color: $border-color;
+    font-size: $font-size;
+    padding: conversion(15px)
+}
+
+div {
+    border: conversion(1px) solid red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: conversion(15px);
+    display: flex;
+    flex-direction: column;
+    gap: conversion(15px);
+    & h1 {
+        @extend %title;
+        border-bottom: conversion(1px) solid;
+    }
+    & h2 {
+        @extend %title;
+        border: 1px solid $red01;
+        padding: 1rem
+    }
+    section:nth-child(3) {
+        display: flex;
+        & article:nth-child(1),
+        & article:nth-child(3) {
+            @include article ($blue03, $green02, conversion(15px))
+        }
+        & article:nth-child(2),
+        & article:nth-child(4) {
+            @include article ($red01, $green02, conversion(15px))
+        }
+    }
+    & section:nth-child(4) {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        div {
+            height: conversion(45px);
+            width: conversion(45px);
+        }
+    }
+    & section:nth-child(5) {
+        article {
+            @include article ($green02, $blue03, conversion(24px))
+        }
+    }
+}
+
+$sizes: 1rem,
+2rem,
+3rem;
+@each $size in $sizes {
+    .fs-#{$size} {
+        font-size: $size;
+    }
+}
+
+$amount: 0;
+@for $i from 1 through 19 {
+    $amount: $amount +5;
+    @if $i==10 {
+        section:nth-child(4) div:nth-child(#{$i}) {
+            background-color: blue;
+            color: red;
+        }
+    }
+    @else {
+        section:nth-child(4) div:nth-child(#{$i}) {
+            background-color: darken(white, $amount);
+            color: lighten(black, $amount);
+        }
+    }
+}
